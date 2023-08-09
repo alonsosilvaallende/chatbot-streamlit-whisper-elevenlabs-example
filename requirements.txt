@@ -1,0 +1,5 @@
+openai
+streamlit
+streamlit-audiorecorder
+git+https://github.com/stlukey/whispercpp.py
+elevenlabs
