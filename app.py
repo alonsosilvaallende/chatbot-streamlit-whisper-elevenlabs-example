@@ -1,14 +1,17 @@
+import os
+import openai
 import streamlit as st
 import base64
 from tempfile import NamedTemporaryFile
 from audiorecorder import audiorecorder
 from whispercpp import Whisper
 from elevenlabs import voices, generate, save, set_api_key, stream
-import openai
 #######
 #from dotenv import load_dotenv, find_dotenv
 #load_dotenv(find_dotenv())
 #######
+
+set_api_key(os.getenv(ELEVENLABS_API_KEY))
 
 from langchain.chat_models import ChatOpenAI
 
