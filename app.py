@@ -11,6 +11,8 @@ from thispersondoesnotexist import get_online_person, save_picture
 #from dotenv import load_dotenv, find_dotenv
 #load_dotenv(find_dotenv())
 #######
+set_api_key(os.getenv("ELEVENLABS_API_KEY"))
+
 from langchain.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder,
@@ -18,18 +20,28 @@ from langchain.prompts import (
     HumanMessagePromptTemplate
 )
 
-set_api_key(os.getenv("ELEVENLABS_API_KEY"))
+example1 = "Give me a haiku about AI"
+example2 = "A one-sentence relaxing speech"
 
 # Streamlit
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
-    st.title("Chatbot with Whisper")
+    st.title("AI Assistant")
     st.image("a_beautiful_person.jpeg", width=200)
     if st.button("Generate a new Image"):
         picture = get_online_person()
         save_picture(picture, "a_beautiful_person.jpeg")
         st.experimental_rerun()
-    prompt_user = "You are a helpful AI assistant"
+    st.subheader("Examples:")
+    Example1 = st.button(example1)
+    Example2 = st.button(example2)
+    prompt_user = "You are a helpful AI assistant."
+    voice = st.selectbox(
+    'Voice',
+    ('Adam', 'Rachel', 'Daniel', 'Dorothy'))
+    language = st.radio(
+    "Language",
+    ('English', 'Other'))
     prompt_received = st.text_area("Give instructions to your AI assistant (optional):", max_chars=2000)
     if len(prompt_received)>0:
         prompt_user = prompt_received
@@ -42,11 +54,13 @@ with st.sidebar:
 
     st.subheader("Current instructions:\n\n"+f":blue[{prompt_user}]")
 
+
+
 from langchain.chat_models import ChatOpenAI
 
 llm = ChatOpenAI(model_name="gpt-3.5-turbo",
                  streaming=True,
-                 temperature=2)
+                 temperature=.7)
 
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
@@ -101,7 +115,12 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # React to user input
-if (prompt := st.chat_input("Your message")) or len(audio):
+if (prompt := st.chat_input("Your message")) or len(audio) or Example1 or Example2:
+    if Example1:
+        prompt = example1
+    if Example2:
+        prompt = example2
+
 #if prompt := st.chat_input("Your message"):
    # If it's coming from the audio recorder transcribe the message with whisper.cpp
     if len(audio)>0:
@@ -116,7 +135,11 @@ if (prompt := st.chat_input("Your message")) or len(audio):
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
-        audio = generate(text=f"{response}", voice="Rachel", model="eleven_monolingual_v1")
+        if language == "English":
+            model="eleven_monolingual_v1"
+        else:
+            model="eleven_multilingual_v1"
+        audio = generate(text=f"{response}", voice=voice, model=model)
         with NamedTemporaryFile(suffix=".mp3") as temp:
             tempname = temp.name
             save(audio, tempname)
