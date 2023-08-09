@@ -4,3 +4,5 @@ streamlit
 streamlit-audiorecorder
 git+https://github.com/stlukey/whispercpp.py
 elevenlabs
+requests
+git+https://github.com/alonsosilvaallende/ThisPersonDoesNotExistAPI

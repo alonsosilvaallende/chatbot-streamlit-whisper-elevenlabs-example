@@ -6,9 +6,10 @@ from tempfile import NamedTemporaryFile
 from audiorecorder import audiorecorder
 from whispercpp import Whisper
 from elevenlabs import voices, generate, save, set_api_key, stream
+from thispersondoesnotexist import get_online_person, save_picture
 #######
-#from dotenv import load_dotenv, find_dotenv
-#load_dotenv(find_dotenv())
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 #######
 
 set_api_key(os.getenv("ELEVENLABS_API_KEY"))
@@ -75,6 +76,12 @@ def autoplay_audio(file_path: str):
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
     st.title("Chatbot with Whisper")
+    st.image("a_beautiful_person.jpeg", width=200)
+    if st.button("Generate a new Image"):
+        picture = get_online_person()
+        save_picture(picture, "a_beautiful_person.jpeg")
+        st.experimental_rerun()
+
 
 # Initialize chat history
 if "messages" not in st.session_state:
