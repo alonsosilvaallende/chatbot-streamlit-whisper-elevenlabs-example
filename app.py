@@ -11,7 +11,7 @@ from elevenlabs import voices, generate, save, set_api_key, stream
 #load_dotenv(find_dotenv())
 #######
 
-set_api_key(os.getenv(ELEVENLABS_API_KEY))
+set_api_key(os.getenv("ELEVENLABS_API_KEY"))
 
 from langchain.chat_models import ChatOpenAI
 
