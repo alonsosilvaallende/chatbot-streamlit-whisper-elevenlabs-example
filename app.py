@@ -38,7 +38,7 @@ with st.sidebar:
     prompt_user = "You are a helpful AI assistant."
     voice = st.selectbox(
     'Voice',
-    ('Adam', 'Rachel', 'Daniel', 'Dorothy'))
+    ('Rachel', 'Adam', 'Dorothy', 'Daniel'))
     language = st.radio(
     "Language",
     ('English', 'Other'))
