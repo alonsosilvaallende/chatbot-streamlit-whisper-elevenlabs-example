@@ -8,8 +8,8 @@ from whispercpp import Whisper
 from elevenlabs import voices, generate, save, set_api_key, stream
 from thispersondoesnotexist import get_online_person, save_picture
 #######
-from dotenv import load_dotenv, find_dotenv
-load_dotenv(find_dotenv())
+#from dotenv import load_dotenv, find_dotenv
+#load_dotenv(find_dotenv())
 #######
 
 set_api_key(os.getenv("ELEVENLABS_API_KEY"))
