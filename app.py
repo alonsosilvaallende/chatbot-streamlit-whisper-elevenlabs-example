@@ -36,7 +36,7 @@ with st.sidebar:
     Example1 = st.button(example1)
     Example2 = st.button(example2)
     prompt_user = "You are a helpful AI assistant."
-    voice = st.selectbox(
+    voice_name = st.selectbox(
     'Voice',
     ('Rachel', 'Adam', 'Dorothy', 'Daniel'))
     language = st.radio(
@@ -135,11 +135,8 @@ if (prompt := st.chat_input("Your message")) or len(audio) or Example1 or Exampl
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
-        if language == "English":
-            model="eleven_monolingual_v1"
-        else:
-            model="eleven_multilingual_v1"
-        audio = generate(text=f"{response}", voice=voice, model=model)
+        model_name = "eleven_monolingual_v1" if language == "English" else "eleven_multilingual_v1"
+        audio = generate(text=f"{response}", voice=voice_name, model=model_name)
         with NamedTemporaryFile(suffix=".mp3") as temp:
             tempname = temp.name
             save(audio, tempname)
